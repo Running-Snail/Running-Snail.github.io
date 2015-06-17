@@ -14,8 +14,8 @@ document.addEventListener('DOMContentLoaded', function() {
         cuboidCalBtn: $('#cuboid_cal_btn'),
 
         tubeLengthInput: $('#tube_length_input'),
-        tubeInnerRadiusInput: $('#tube_inner_radius_input'),
         tubeOuterRadiusInput: $('#tube_outer_radius_input'),
+        tubeThickInput: $('#tube_thick_input'),
         tubeResultLabel: $("#tube_result_label"),
         tubeCalBtn: $('#tube_cal_btn'),
 
@@ -27,7 +27,7 @@ document.addEventListener('DOMContentLoaded', function() {
         PI: 3.1415926,
 
         fixFloat: function(f) {
-            return f.toFixed(4);
+            return f;
         },
 
         calculateMass: function(density, volumn) {
@@ -80,22 +80,18 @@ document.addEventListener('DOMContentLoaded', function() {
             console.log('<start calculating tube>');
             var density = parseFloat(material.densityInput.value);
             var length = parseFloat(material.tubeLengthInput.value);
-            var innerRadius = parseFloat(material.tubeInnerRadiusInput.value);
+            var thick = parseFloat(material.tubeThickInput.value);
             var outerRadius = parseFloat(material.tubeOuterRadiusInput.value);
             console.log('[density] ' + density);
             console.log('[length] ' + length);
-            console.log('[innerRadius] ' + innerRadius);
+            console.log('[thick] ' + thick);
             console.log('[outerRadius] ' + outerRadius);
 
-            if (!material.checkNaN(density, length, innerRadius, outerRadius)) {
+            if (!material.checkNaN(density, length, outerRadius - thick, outerRadius)) {
                 material.tubeResultLabel.innerHTML = '输入有误';
                 return;
             }
-            if (innerRadius > outerRadius) {
-                material.tubeResultLabel.innerHTML = '外半径小于内半径';
-                return;
-            }
-            var mass = material.calculateMass(density, material.calTubeVolumn(length, innerRadius, outerRadius));
+            var mass = material.calculateMass(density, material.calTubeVolumn(length, outerRadius-thick, outerRadius));
             console.log('[mass] ' + mass);
             material.tubeResultLabel.innerHTML = material.fixFloat(mass);
         },
@@ -164,7 +160,7 @@ document.addEventListener('DOMContentLoaded', function() {
             material.cuboidWidthInput.addEventListener('input', material.onCuboidInputChange);
             material.cuboidHeightInput.addEventListener('input', material.onCuboidInputChange);
             material.tubeLengthInput.addEventListener('input', material.onTubeInputChange);
-            material.tubeInnerRadiusInput.addEventListener('input', material.onTubeInputChange);
+            material.tubeThickInput.addEventListener('input', material.onTubeInputChange);
             material.tubeOuterRadiusInput.addEventListener('input', material.onTubeInputChange);
             material.cylinderLengthInput.addEventListener('input', material.onCylinderInputChange);
             material.cylinderRadiusInput.addEventListener('input', material.onCylinderInputChange);
