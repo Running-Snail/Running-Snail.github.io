@@ -14,13 +14,13 @@ document.addEventListener('DOMContentLoaded', function() {
         cuboidCalBtn: $('#cuboid_cal_btn'),
 
         tubeLengthInput: $('#tube_length_input'),
-        tubeOuterRadiusInput: $('#tube_outer_radius_input'),
+        tubeOuterDiameterInput: $('#tube_outer_diameter_input'),
         tubeThickInput: $('#tube_thick_input'),
         tubeResultLabel: $("#tube_result_label"),
         tubeCalBtn: $('#tube_cal_btn'),
 
         cylinderLengthInput: $('#cylinder_length_input'),
-        cylinderRadiusInput: $('#cylinder_radius_input'),
+        cylinderDiameterInput: $('#cylinder_diameter_input'),
         cylinderResultLabel: $("#cylinder_result_label"),
         cylinderCalBtn: $('#cylinder_cal_btn'),
 
@@ -71,7 +71,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 material.cuboidResultLabel.innerHTML = '输入有误';
                 return;
             }
-            var mass = material.calculateMass(density, material.calCuboidVolumn(length, width, height));
+            var mass = material.calculateMass(density*1e3, material.calCuboidVolumn(length, width, height));
             console.log('[mass] ' + mass);
             material.cuboidResultLabel.innerHTML = material.fixFloat(mass);
         },
@@ -81,17 +81,17 @@ document.addEventListener('DOMContentLoaded', function() {
             var density = parseFloat(material.densityInput.value);
             var length = parseFloat(material.tubeLengthInput.value);
             var thick = parseFloat(material.tubeThickInput.value);
-            var outerRadius = parseFloat(material.tubeOuterRadiusInput.value);
+            var outerDiameter = parseFloat(material.tubeOuterDiameterInput.value);
             console.log('[density] ' + density);
             console.log('[length] ' + length);
             console.log('[thick] ' + thick);
-            console.log('[outerRadius] ' + outerRadius);
+            console.log('[outerDiameter] ' + outerDiameter);
 
-            if (!material.checkNaN(density, length, outerRadius - thick, outerRadius)) {
+            if (!material.checkNaN(density, length, outerDiameter/2 - thick, outerDiameter/2)) {
                 material.tubeResultLabel.innerHTML = '输入有误';
                 return;
             }
-            var mass = material.calculateMass(density, material.calTubeVolumn(length, outerRadius-thick, outerRadius));
+            var mass = material.calculateMass(density*1e3, material.calTubeVolumn(length, outerDiameter/2-thick, outerDiameter/2));
             console.log('[mass] ' + mass);
             material.tubeResultLabel.innerHTML = material.fixFloat(mass);
         },
@@ -100,16 +100,16 @@ document.addEventListener('DOMContentLoaded', function() {
             console.log('<start calculating cylinder>');
             var density = parseFloat(material.densityInput.value);
             var length = parseFloat(material.cylinderLengthInput.value);
-            var radius = parseFloat(material.cylinderRadiusInput.value);
+            var diameter = parseFloat(material.cylinderDiameterInput.value);
             console.log('[density] ' + density);
             console.log('[length] ' + length);
-            console.log('[radius] ' + radius);
+            console.log('[diameter] ' + diameter);
 
-            if (!material.checkNaN(density, length, radius)) {
+            if (!material.checkNaN(density, length, diameter/2)) {
                 material.cylinderResultLabel.innerHTML = '输入有误';
                 return;
             }
-            var mass = material.calculateMass(density, material.calCylinderVolumn(length, radius));
+            var mass = material.calculateMass(density*1e3, material.calCylinderVolumn(length, diameter/2));
             console.log('[mass] ' + mass);
             material.cylinderResultLabel.innerHTML = material.fixFloat(mass);
         },
@@ -161,9 +161,9 @@ document.addEventListener('DOMContentLoaded', function() {
             material.cuboidHeightInput.addEventListener('input', material.onCuboidInputChange);
             material.tubeLengthInput.addEventListener('input', material.onTubeInputChange);
             material.tubeThickInput.addEventListener('input', material.onTubeInputChange);
-            material.tubeOuterRadiusInput.addEventListener('input', material.onTubeInputChange);
+            material.tubeOuterDiameterInput.addEventListener('input', material.onTubeInputChange);
             material.cylinderLengthInput.addEventListener('input', material.onCylinderInputChange);
-            material.cylinderRadiusInput.addEventListener('input', material.onCylinderInputChange);
+            material.cylinderDiameterInput.addEventListener('input', material.onCylinderInputChange);
         }
     }
 
